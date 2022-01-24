@@ -1,0 +1,17 @@
+{
+  "manifest_version": 2,
+  "name": "Custom Youtube Playback Speed",
+  "version": "1.0",
+  "description": "Change youtube playback speed for any value",
+  "short_name": "YTSpeed",
+  "content_scripts": [
+    {
+      "matches": [
+        "https://www.youtube.com/*"
+      ],
+      "js": [
+        "index.js"
+      ]
+    }
+  ]
+}

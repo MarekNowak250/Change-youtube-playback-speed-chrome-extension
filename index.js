@@ -11,24 +11,11 @@
      return option;
   }
 
-  function setVisibility(videoPlayer){
-    if(videoPlayer.style.top !== "0px" || videoPlayer.style==null){
-      mainDiv.style.display = "none";
-      mainDiv.style.visibility = "hidden";}
-      else{
-      mainDiv.style.display = "block";
-      mainDiv.style.visibility = "visible";
-      videoPlayer.playbackRate = playbackRate;
-      }
-  }
-  
   var sessionStorage = window.sessionStorage;
   var videoPlayer;
   var mainDiv = document.createElement("div");
-  mainDiv.style.position = "fixed";
-  mainDiv.style.bottom = "2.5vh";
-  mainDiv.style.left = "30%";
-  mainDiv.style.color = "white";
+  mainDiv.classList.add("ytp-menuitem-content");
+
   var playbackRate = 1;
   var playbackJSON = JSON.parse(sessionStorage.getItem("yt-player-playback-rate"));
   console.log(playbackJSON)
@@ -36,38 +23,6 @@
     playbackRate = 1;
   else
     playbackRate = playbackJSON.data;
-
-  loading = setInterval(function () {
-    if (videoPlayer= document.getElementsByTagName("video")[0]) {
-      setVisibility(videoPlayer);
-
-      observer = new MutationObserver((changes) => {
-        changes.forEach(change => {
-            if(change.attributeName.includes('style')){
-              setVisibility(videoPlayer);
-
-              var playbackJSON = JSON.parse(sessionStorage.getItem("yt-player-playback-rate"));
-              console.log(playbackJSON)
-              if(!playbackJSON)
-                playbackRate = 1;
-              else
-                playbackRate = playbackJSON.data;
-            }
-        });
-      });
-      observer.observe(videoPlayer, {attributes : true});
-      clearInterval(loading);
-    }
-  }, 100); 
-
-
-  var currentValLabel = document.createElement("p");
-  currentValLabel.innerHTML = "Current speed: 1";
-  currentValLabel.setAttribute("id", "currentValRange");
-  currentValLabel.style.position = "relative";
-  currentValLabel.style.left = "40%";
-  currentValLabel.style.fontSize = "1.4rem";
-  mainDiv.appendChild(currentValLabel);
 
 
   var rangeInput = document.createElement("input");
@@ -77,14 +32,16 @@
   rangeInput.setAttribute("step", "0.1");
   rangeInput.setAttribute("min", "0.1");
   rangeInput.setAttribute("max", "5");
+  //rangeInput.style.marginLeft = "1vw";
   rangeInput.setAttribute("list", "tickmarks");
   rangeInput.addEventListener("change", () => { var newValue = document.querySelector("#speed").value;
     videoPlayer.playbackRate = newValue;
-    document.querySelector("#currentValRange").innerHTML = "Current speed: " +newValue;
+    document.querySelector("#speedLabel").innerHTML = "Current speed: " +newValue;
     sessionStorage.setItem("yt-player-playback-rate", '{"data":"'+newValue+'","creation":'+new Date().getTime()+'}');
   });
-  
-  rangeInput.style.width = "20vw";
+  rangeInput.style.minWidth = "150px";
+  rangeInput.style.width = "8vw"
+  rangeInput.style.maxWidth = "400px";
   mainDiv.appendChild(rangeInput);
 
   var tickmarks = document.createElement("datalist");
@@ -109,10 +66,41 @@
  tickmarks.appendChild(createOption(5));
 mainDiv.appendChild(tickmarks);
 
-  document.body.appendChild(mainDiv);
+var menuitem = document.createElement("div");
+menuitem.classList.add("ytp-menuitem");
+menuitem.setAttribute("role", "menuitem");
+var icon = document.createElement("div");
+icon.classList.add("ytp-menu-icon");
+var itemLabel = document.createElement("div");
+itemLabel.classList.add("ytp-menuitem-label");
+itemLabel.id = "speedLabel";
+menuitem.append(icon);
+menuitem.append(itemLabel);
+menuitem.append(mainDiv);
 
+
+    loading = setInterval(function () {
+    if (videoPlayer= document.getElementsByTagName("video")[0]) {
+      document.querySelector(".ytp-panel-menu").appendChild(menuitem);
+      observer = new MutationObserver((changes) => {
+        changes.forEach(change => {
+            if(change.attributeName.includes('style')){
+              document.querySelector(".ytp-panel-menu").appendChild(menuitem);
+              var playbackJSON = JSON.parse(sessionStorage.getItem("yt-player-playback-rate"));
+              console.log(playbackJSON)
+              if(!playbackJSON)
+                playbackRate = 1;
+              else
+                playbackRate = playbackJSON.data;
+            }
+        });
+      });
+      observer.observe(videoPlayer, {attributes : true});
+      clearInterval(loading);
+    }
+  }, 100); 
    
- currentValLabel.innerHTML = "Current speed: " + playbackRate;
+ itemLabel.innerHTML = "Current speed: " + playbackRate;
  rangeInput.value = playbackRate;
   }
 

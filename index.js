@@ -11,12 +11,55 @@
      return option;
   }
 
-
+  function setVisibility(videoPlayer){
+    if(videoPlayer.style.top !== "0px" || videoPlayer.style==null){
+      mainDiv.style.display = "none";
+      mainDiv.style.visibility = "hidden";}
+      else{
+      mainDiv.style.display = "block";
+      mainDiv.style.visibility = "visible";
+      videoPlayer.playbackRate = playbackRate;
+      }
+  }
+  
+  var sessionStorage = window.sessionStorage;
+  var videoPlayer;
   var mainDiv = document.createElement("div");
   mainDiv.style.position = "fixed";
   mainDiv.style.bottom = "2.5vh";
   mainDiv.style.left = "30%";
   mainDiv.style.color = "white";
+  var playbackRate = 1;
+  var playbackJSON = JSON.parse(sessionStorage.getItem("yt-player-playback-rate"));
+  console.log(playbackJSON)
+  if(!playbackJSON)
+    playbackRate = 1;
+  else
+    playbackRate = playbackJSON.data;
+
+  loading = setInterval(function () {
+    if (videoPlayer= document.getElementsByTagName("video")[0]) {
+      setVisibility(videoPlayer);
+
+      observer = new MutationObserver((changes) => {
+        changes.forEach(change => {
+            if(change.attributeName.includes('style')){
+              setVisibility(videoPlayer);
+
+              var playbackJSON = JSON.parse(sessionStorage.getItem("yt-player-playback-rate"));
+              console.log(playbackJSON)
+              if(!playbackJSON)
+                playbackRate = 1;
+              else
+                playbackRate = playbackJSON.data;
+            }
+        });
+      });
+      observer.observe(videoPlayer, {attributes : true});
+      clearInterval(loading);
+    }
+  }, 100); 
+
 
   var currentValLabel = document.createElement("p");
   currentValLabel.innerHTML = "Current speed: 1";
@@ -36,12 +79,13 @@
   rangeInput.setAttribute("max", "5");
   rangeInput.setAttribute("list", "tickmarks");
   rangeInput.addEventListener("change", () => { var newValue = document.querySelector("#speed").value;
-     document.getElementsByTagName("video")[0].playbackRate = newValue;
-    document.querySelector("#currentValRange").innerHTML = "Current speed: " +newValue });
+    videoPlayer.playbackRate = newValue;
+    document.querySelector("#currentValRange").innerHTML = "Current speed: " +newValue;
+    sessionStorage.setItem("yt-player-playback-rate", '{"data":"'+newValue+'","creation":'+new Date().getTime()+'}');
+  });
+  
   rangeInput.style.width = "20vw";
-  rangeInput.value = 1;
   mainDiv.appendChild(rangeInput);
-
 
   var tickmarks = document.createElement("datalist");
   tickmarks.style.color = "white";
@@ -67,8 +111,9 @@ mainDiv.appendChild(tickmarks);
 
   document.body.appendChild(mainDiv);
 
-      //myStorage = window.sessionStorage;
-     // myStorage.setItem('yt-player-playback-rate', '{"data":"5","creation":'+new Date().getTime()+'}');
+   
+ currentValLabel.innerHTML = "Current speed: " + playbackRate;
+ rangeInput.value = playbackRate;
   }
 
   function inject(fn) {

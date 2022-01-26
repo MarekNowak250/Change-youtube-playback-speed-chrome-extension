@@ -24,7 +24,6 @@
   else
     playbackRate = playbackJSON.data;
 
-
   var rangeInput = document.createElement("input");
   rangeInput.setAttribute("type", "range");
   rangeInput.setAttribute("id", "speed");
@@ -32,7 +31,6 @@
   rangeInput.setAttribute("step", "0.1");
   rangeInput.setAttribute("min", "0.1");
   rangeInput.setAttribute("max", "5");
-  //rangeInput.style.marginLeft = "1vw";
   rangeInput.setAttribute("list", "tickmarks");
   rangeInput.addEventListener("change", () => { var newValue = document.querySelector("#speed").value;
     videoPlayer.playbackRate = newValue;
@@ -40,8 +38,8 @@
     sessionStorage.setItem("yt-player-playback-rate", '{"data":"'+newValue+'","creation":'+new Date().getTime()+'}');
   });
   rangeInput.style.minWidth = "150px";
-  rangeInput.style.width = "8vw"
-  rangeInput.style.maxWidth = "400px";
+  rangeInput.style.width = "10vw"
+  //rangeInput.style.maxWidth = "400px";
   mainDiv.appendChild(rangeInput);
 
   var tickmarks = document.createElement("datalist");
@@ -82,16 +80,21 @@ menuitem.append(mainDiv);
     loading = setInterval(function () {
     if (videoPlayer= document.getElementsByTagName("video")[0]) {
       document.querySelector(".ytp-panel-menu").appendChild(menuitem);
+      videoPlayer.playbackRate = playbackRate;
+      rangeInput.value = playbackRate;
       observer = new MutationObserver((changes) => {
         changes.forEach(change => {
             if(change.attributeName.includes('style')){
               document.querySelector(".ytp-panel-menu").appendChild(menuitem);
+              
               var playbackJSON = JSON.parse(sessionStorage.getItem("yt-player-playback-rate"));
-              console.log(playbackJSON)
               if(!playbackJSON)
                 playbackRate = 1;
               else
                 playbackRate = playbackJSON.data;
+
+                videoPlayer.playbackRate = playbackRate;
+                rangeInput.value = playbackRate;
             }
         });
       });
@@ -101,7 +104,7 @@ menuitem.append(mainDiv);
   }, 100); 
    
  itemLabel.innerHTML = "Current speed: " + playbackRate;
- rangeInput.value = playbackRate;
+
   }
 
   function inject(fn) {

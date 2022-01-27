@@ -1,15 +1,5 @@
 (function () {
-  function script() {
-    function createOption(value, label) {
-      var option = document.createElement("option");
-      option.setAttribute("value", value);
-      if (!label) {
-        return option;
-      }
-      option.setAttribute("label", label);
-      return option;
-    }
-
+  function func() {
     function setNewSpeed() {
       let newValue = this.value;
       videoPlayer.playbackRate = newValue;
@@ -57,28 +47,6 @@
     //rangeInput.style.maxWidth = "400px";
     mainDiv.appendChild(rangeInput);
 
-    var tickmarks = document.createElement("datalist");
-    tickmarks.style.color = "white";
-    tickmarks.style.backgroundColor = "white";
-    tickmarks.setAttribute("id", "tickmarks");
-    tickmarks.appendChild(createOption(0.1));
-    tickmarks.appendChild(createOption(0.2));
-    tickmarks.appendChild(createOption(0.25));
-    tickmarks.appendChild(createOption(0.35));
-    tickmarks.appendChild(createOption(0.5));
-    tickmarks.appendChild(createOption(0.75));
-    tickmarks.appendChild(createOption(0.9));
-    tickmarks.appendChild(createOption(1));
-    tickmarks.appendChild(createOption(1.25));
-    tickmarks.appendChild(createOption(1.5));
-    tickmarks.appendChild(createOption(2));
-    tickmarks.appendChild(createOption(2.5));
-    tickmarks.appendChild(createOption(3));
-    tickmarks.appendChild(createOption(3.5));
-    tickmarks.appendChild(createOption(4));
-    tickmarks.appendChild(createOption(5));
-    mainDiv.appendChild(tickmarks);
-
     function CreateLabel() {
       let itemLabel = document.createElement("div");
       itemLabel.classList.add("ytp-menuitem-label");
@@ -92,8 +60,12 @@
       numericInput.setAttribute("min", "0.10");
       numericInput.setAttribute("max", "10");
       numericInput.setAttribute("step", "0.10");
-      numericInput.style.marginLeft = "2rem";
+      numericInput.style.marginLeft = "0.5rem";
       numericInput.style.width = "4rem";
+      numericInput.style.backgroundColor = "transparent";
+      numericInput.style.color = "white";
+      numericInput.style.border = "none";
+      numericInput.style.boxShadow = "none";
       numericInput.addEventListener("change", setNewSpeed);
       numericInput.onkeydown = function (e) {
         e.stopPropagation();
@@ -156,11 +128,11 @@
     }, 100);
   }
 
-  function inject(fn) {
+  function inject(fnc) {
     const script = document.createElement("script");
-    script.text = `(${fn.toString()})();`;
+    script.text = `(${fnc.toString()})();`;
     document.documentElement.appendChild(script);
   }
 
-  inject(script);
+  inject(func);
 })();

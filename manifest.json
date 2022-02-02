@@ -2,7 +2,6 @@
   "manifest_version": 3,
   "name": "Custom Youtube Playback Speed",
   "version": "1.0",
-  "description": "Change youtube playback speed for any value",
   "short_name": "YTSpeed",
   "content_scripts": [
     {
@@ -16,6 +15,5 @@
       "resources": ["index.js"],
       "matches": ["https://www.youtube.com/*"]
     }
-  ],
-  "permissions": ["scripting"]
+  ]
 }

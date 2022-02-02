@@ -97,19 +97,28 @@
     }
 
     var menuitem = CreateMenuItem();
+    var videoPlayers;
 
     loading = setInterval(function () {
-      if ((videoPlayer = document.getElementsByTagName("video")[0])) {
-        document.querySelector(".ytp-panel-menu").appendChild(menuitem);
+      if ((videoPlayers = document.getElementsByTagName("video"))) {
+        console.log(videoPlayers.length);
+        if (videoPlayers.length < 1) return;
+        if (videoPlayers.length > 1) {
+          var preview = document.getElementById("preview");
+          if (preview.contains(videoPlayers[0])) videoPlayer = videoPlayers[1];
+          else videoPlayer = videoPlayers[0];
+        } else videoPlayer = videoPlayers[0];
+
+        videoPlayer.parentElement.parentElement
+          .querySelector(".ytp-panel-menu")
+          .appendChild(menuitem);
         videoPlayer.playbackRate = playbackRate;
         rangeInput.value = playbackRate;
         document.querySelector("#numInput").value = playbackRate;
 
         observer = new MutationObserver((changes) => {
           changes.forEach((change) => {
-            if (change.attributeName.includes("style")) {
-              document.querySelector(".ytp-panel-menu").appendChild(menuitem);
-
+            if (change.attributeName.includes("src")) {
               var playbackJSON = JSON.parse(
                 sessionStorage.getItem("yt-player-playback-rate")
               );
@@ -119,6 +128,7 @@
               document.querySelector("#numInput").value = playbackRate;
               videoPlayer.playbackRate = playbackRate;
               rangeInput.value = playbackRate;
+              console.log(change);
             }
           });
         });

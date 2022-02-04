@@ -1,7 +1,14 @@
 (function () {
   function func() {
-    function setNewSpeed() {
+    function setNewSpeed(val) {
       let newValue = this.value;
+
+      if (isNaN(newValue)) newValue = val;
+      if (newValue > 10) newValue = 10;
+      if (newValue < 0.1) newValue = 0.1;
+      if (newValue == 0.35) newValue = 0.25;
+
+      newValue = Number(newValue).toFixed(2);
       videoPlayer.playbackRate = newValue;
 
       let rangeinp = document.querySelector("#speed");
@@ -13,11 +20,41 @@
       if (numinp.value != newValue) {
         numinp.value = newValue;
       }
+      playbackRate = newValue;
 
       sessionStorage.setItem(
         "yt-player-playback-rate",
         '{"data":"' + newValue + '","creation":' + new Date().getTime() + "}"
       );
+    }
+
+    function keyDownHandler(e) {
+      if (e.key == "a" || e.key == "A") {
+        setNewSpeed(Number(playbackRate) - 0.25);
+      } else if (e.key == "d" || e.key == "D") {
+        setNewSpeed(Number(playbackRate) + 0.25);
+      } else return;
+
+      let infoLabel = getParentElement(videoPlayer, 2).querySelector(
+        ".ytp-bezel-text"
+      );
+      let parentCont = getParentElement(infoLabel, 2);
+      parentCont.style.display = "block";
+      parentCont.classList.remove("ytp-bezel-text-hide");
+      infoLabel.innerHTML = playbackRate;
+
+      setTimeout(() => {
+        parentCont.style.display = "none";
+        parentCont.classList.add("ytp-bezel-text-hide");
+      }, 1500);
+    }
+
+    function getParentElement(elem, times) {
+      let parent;
+      if (times == 0) return elem;
+      if ((parent = elem.parentElement))
+        return getParentElement(elem.parentElement, times - 1);
+      else return false;
     }
 
     var sessionStorage = window.sessionStorage;
@@ -29,7 +66,7 @@
     var playbackJSON = JSON.parse(
       sessionStorage.getItem("yt-player-playback-rate")
     );
-    //console.log(playbackJSON)
+
     if (!playbackJSON) playbackRate = 1;
     else playbackRate = playbackJSON.data;
 
@@ -44,7 +81,6 @@
     rangeInput.addEventListener("change", setNewSpeed);
     rangeInput.style.minWidth = "150px";
     rangeInput.style.width = "10vw";
-    //rangeInput.style.maxWidth = "400px";
     mainDiv.appendChild(rangeInput);
 
     function CreateLabel() {
@@ -69,9 +105,6 @@
       numericInput.addEventListener("change", setNewSpeed);
       numericInput.onkeydown = function (e) {
         e.stopPropagation();
-      };
-      numericInput.oninput = function (e) {
-        console.log(e);
       };
       numericInput.name = "numInput";
       numericInput.id = "numInput";
@@ -99,9 +132,18 @@
     var menuitem = CreateMenuItem();
     var videoPlayers;
 
+    loadCommentBox = setInterval(() => {
+      let commentInput;
+      if ((commentInput = document.querySelector("#comment-dialog"))) {
+        commentInput.addEventListener("keydown", function (e) {
+          e.stopPropagation();
+        });
+      } else return;
+      clearInterval(loadCommentBox);
+    }, 1000);
+
     loading = setInterval(function () {
       if ((videoPlayers = document.getElementsByTagName("video"))) {
-        console.log(videoPlayers.length);
         if (videoPlayers.length < 1) return;
         if (videoPlayers.length > 1) {
           var preview = document.getElementById("preview");
@@ -109,9 +151,15 @@
           else videoPlayer = videoPlayers[0];
         } else videoPlayer = videoPlayers[0];
 
-        videoPlayer.parentElement.parentElement
+        let keydownElement;
+        if ((keydownElement = document.querySelector("#content"))) {
+          keydownElement.addEventListener("keydown", keyDownHandler);
+        } else return;
+
+        getParentElement(videoPlayer, 2)
           .querySelector(".ytp-panel-menu")
           .appendChild(menuitem);
+
         videoPlayer.playbackRate = playbackRate;
         rangeInput.value = playbackRate;
         document.querySelector("#numInput").value = playbackRate;
@@ -128,14 +176,13 @@
               document.querySelector("#numInput").value = playbackRate;
               videoPlayer.playbackRate = playbackRate;
               rangeInput.value = playbackRate;
-              console.log(change);
             }
           });
         });
         observer.observe(videoPlayer, { attributes: true });
         clearInterval(loading);
       }
-    }, 100);
+    }, 1000);
   }
 
   function inject(fnc) {

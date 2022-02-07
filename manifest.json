@@ -16,5 +16,11 @@
       "resources": ["index.js"],
       "matches": ["https://www.youtube.com/*"]
     }
-  ]
+  ],
+  "icons": {
+    "16": "/icons/extension_icon16.png",
+    "32": "/icons/extension_icon32.png",
+    "48": "/icons/extension_icon48.png",
+    "128": "/icons/extension_icon128.png"
+  }
 }

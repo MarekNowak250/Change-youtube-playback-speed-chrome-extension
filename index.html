@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Custom yt speed</title>
+    <meta charset="utf-8" />
+    <script src="./page.js"></script>
+    <style>
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+      }
+
+      html {
+        width: 420px;
+        background-color: #4e0adf;
+        color: white;
+      }
+
+      body {
+        padding: 0px 16px;
+      }
+
+      h1 {
+        font-size: 24px;
+      }
+
+      input {
+        font-size: 16px;
+        font-size: max(16px, 1em);
+        font-family: inherit;
+        padding: 0.25em 0.5em;
+        background-color: #fff;
+        border: 2px solid black;
+        border-radius: 4px;
+      }
+
+      .inputContainer {
+        margin-bottom: 16px;
+        display: grid;
+      }
+
+      .inputContainer label {
+        margin-bottom: 8px;
+      }
+
+      .submit-button {
+        width: 100%;
+        padding: 10px 0px;
+        font-weight: bold;
+        width: 100%;
+      }
+
+      .submit-button:hover {
+        background-color: #cecece;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Custom yt playback speed - settings</h1>
+    <form id="form">
+      <div class="inputContainer">
+        <label for="speedUp">Speed up: </label>
+        <input type="text" name="speedUp" id="speedUp" required />
+      </div>
+      <div class="inputContainer">
+        <label for="speedDown">Speed down: </label>
+        <input type="text" name="speedDown" id="speedDown" required />
+      </div>
+      <div>
+        <input type="submit" class="submit-button" value="Save" />
+      </div>
+    </form>
+    <p id="info"></p>
+  </body>
+</html>

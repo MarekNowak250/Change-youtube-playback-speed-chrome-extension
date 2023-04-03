@@ -1,13 +1,13 @@
-var speedDownKey = "-";
-var speedUpKey = "+";
+var speedDownKey = ["-", "a"];
+var speedUpKey = ["+", "d"];
 
 chrome.runtime.sendMessage({ method: "getSpeedUpKey" }, function (response) {
-  if (response == null || response.data == null) speedUpKey = "+";
+  if (response == null || response.data == null) return;
   else speedUpKey = response.data;
 });
 
 chrome.runtime.sendMessage({ method: "getSpeedDownKey" }, function (response) {
-  if (response == null || response.data == null) speedDownKey = "-";
+  if (response == null || response.data == null) return;
   else speedDownKey = response.data;
 });
 
@@ -41,10 +41,9 @@ function injectControl() {
   }
 
   function keyDownHandler(e) {
-    console.log("Speed down: " + speedDownKey);
-    if (e.key == speedDownKey) {
+    if (speedDownKey.includes(e.key)) {
       setNewSpeed(Number(playbackRate) - 0.25);
-    } else if (e.key == speedUpKey) {
+    } else if (speedUpKey.includes(e.key)) {
       setNewSpeed(Number(playbackRate) + 0.25);
     } else return;
 
@@ -175,8 +174,6 @@ function injectControl() {
         .querySelector(".ytp-panel-menu")
         .appendChild(menuitem);
 
-      setNewSpeed(playbackRate);
-
       observer = new MutationObserver((changes) => {
         changes.forEach((change) => {
           if (change.attributeName.includes("src")) {
@@ -193,9 +190,11 @@ function injectControl() {
         });
       });
       observer.observe(videoPlayer, { attributes: true });
+
+      setNewSpeed(playbackRate);
       clearInterval(loading);
     }
   }, 1000);
 }
 
-injectControl();
+window.onload = injectControl();

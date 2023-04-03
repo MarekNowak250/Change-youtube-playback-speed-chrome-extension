@@ -12,7 +12,7 @@
       }
 
       html {
-        width: 420px;
+        width: 440px;
         background-color: #4e0adf;
         color: white;
       }
@@ -27,32 +27,47 @@
 
       input {
         font-size: 16px;
-        font-size: max(16px, 1em);
         font-family: inherit;
-        padding: 0.25em 0.5em;
+        padding: 0.25em 0.25em;
         background-color: #fff;
         border: 2px solid black;
         border-radius: 4px;
+        margin-top: 8px;
+        margin-right: 8px;
       }
 
       .inputContainer {
-        margin-bottom: 16px;
-        display: grid;
+        margin-bottom: 8px;
       }
 
       .inputContainer label {
         margin-bottom: 8px;
+        grid-area: input;
       }
 
       .submit-button {
-        width: 100%;
+        width: 98%;
         padding: 10px 0px;
         font-weight: bold;
-        width: 100%;
+        margin: 0;
       }
 
       .submit-button:hover {
         background-color: #cecece;
+        cursor: pointer;
+      }
+
+      #form {
+        display: grid;
+        grid-template-columns: auto auto;
+        grid-template-rows: auto;
+        grid-template-areas:
+          "input input"
+          "submit submit";
+      }
+
+      .submit_button-container {
+        grid-area: submit;
       }
     </style>
   </head>
@@ -67,7 +82,7 @@
         <label for="speedDown">Speed down: </label>
         <input type="text" name="speedDown" id="speedDown" required />
       </div>
-      <div>
+      <div class="submit_button-container">
         <input type="submit" class="submit-button" value="Save" />
       </div>
     </form>

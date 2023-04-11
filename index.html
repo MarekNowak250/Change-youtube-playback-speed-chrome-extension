@@ -63,6 +63,7 @@
         grid-template-rows: auto;
         grid-template-areas:
           "input input"
+          "input input"
           "submit submit";
       }
 
@@ -81,6 +82,30 @@
       <div class="inputContainer">
         <label for="speedDown">Speed down: </label>
         <input type="text" name="speedDown" id="speedDown" required />
+      </div>
+      <div class="inputContainer">
+        <label for="stepUp">Step up: </label>
+        <input
+          type="number"
+          name="stepUp"
+          id="stepUp"
+          min="0.1"
+          max="1"
+          step="0.01"
+          required
+        />
+      </div>
+      <div class="inputContainer">
+        <label for="stepDown">Step down: </label>
+        <input
+          type="number"
+          name="stepDown"
+          id="stepDown"
+          min="0.1"
+          max="1"
+          step="0.01"
+          required
+        />
       </div>
       <div class="submit_button-container">
         <input type="submit" class="submit-button" value="Save" />

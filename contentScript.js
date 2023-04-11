@@ -1,5 +1,7 @@
 var speedDownKey = ["-", "a"];
 var speedUpKey = ["+", "d"];
+var stepUp = 0.25;
+var stepDown = 0.25;
 
 chrome.runtime.sendMessage({ method: "getSpeedUpKey" }, function (response) {
   if (response == null || response.data == null) return;
@@ -11,6 +13,16 @@ chrome.runtime.sendMessage({ method: "getSpeedDownKey" }, function (response) {
   else speedDownKey = response.data;
 });
 
+chrome.runtime.sendMessage({ method: "getStepUp" }, function (response) {
+  if (response == null || response.data == null) return;
+  else stepUp = Number(response.data);
+});
+
+chrome.runtime.sendMessage({ method: "getStepDown" }, function (response) {
+  if (response == null || response.data == null) return;
+  else stepDown = Number(response.data);
+});
+
 function injectControl() {
   function setNewSpeed(val) {
     let newValue = this.value;
@@ -18,7 +30,6 @@ function injectControl() {
     if (isNaN(newValue)) newValue = val;
     if (newValue > 10) newValue = 10;
     if (newValue < 0.1) newValue = 0.1;
-    if (newValue == 0.35) newValue = 0.25;
 
     newValue = Number(newValue).toFixed(2);
     videoPlayer.playbackRate = newValue;
@@ -42,9 +53,9 @@ function injectControl() {
 
   function keyDownHandler(e) {
     if (speedDownKey.includes(e.key)) {
-      setNewSpeed(Number(playbackRate) - 0.25);
+      setNewSpeed(Number(playbackRate) - stepDown);
     } else if (speedUpKey.includes(e.key)) {
-      setNewSpeed(Number(playbackRate) + 0.25);
+      setNewSpeed(Number(playbackRate) + stepUp);
     } else return;
 
     let infoLabel = getParentElement(videoPlayer, 2).querySelector(

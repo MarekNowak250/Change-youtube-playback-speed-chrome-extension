@@ -52,6 +52,7 @@ function injectControl() {
   }
 
   function keyDownHandler(e) {
+    console.log(e);
     if (speedDownKey.includes(e.key)) {
       setNewSpeed(Number(playbackRate) - stepDown);
     } else if (speedUpKey.includes(e.key)) {
@@ -126,6 +127,18 @@ function injectControl() {
     return menuitem;
   }
 
+  function UpdatePlaybackRateFromStorage(videoPlayer) {
+    var playbackJSON = JSON.parse(
+      sessionStorage.getItem("yt-player-playback-rate")
+    );
+    if (!playbackJSON) playbackRate = 1;
+    else playbackRate = playbackJSON.data;
+
+    document.querySelector("#numInput").value = playbackRate;
+    videoPlayer.playbackRate = playbackRate;
+    rangeInput.value = playbackRate;
+  }
+
   // program starts here
   var sessionStorage = window.sessionStorage;
   var videoPlayer;
@@ -167,36 +180,25 @@ function injectControl() {
   }, 1000);
 
   loading = setInterval(function () {
-    if ((videoPlayers = document.getElementsByTagName("video"))) {
-      if (videoPlayers.length < 1) return;
+    if (videoPlayer == null) {
+      let movieContainer = document.querySelector("#movie_player");
+      if (movieContainer == null) return;
+      videoPlayer = movieContainer.getElementsByTagName("video")[0];
 
-      if (videoPlayers.length > 1) {
-        var preview = document.getElementById("preview");
-        if (preview.contains(videoPlayers[0])) videoPlayer = videoPlayers[1];
-        else videoPlayer = videoPlayers[0];
-      } else videoPlayer = videoPlayers[0];
+      if (videoPlayer == null) return;
 
       let keydownElement;
       if ((keydownElement = document.querySelector("#content"))) {
         keydownElement.addEventListener("keydown", keyDownHandler);
       } else return;
 
-      getParentElement(videoPlayer, 2)
-        .querySelector(".ytp-panel-menu")
-        .appendChild(menuitem);
+      movieContainer.querySelector(".ytp-panel-menu").appendChild(menuitem);
+      UpdatePlaybackRateFromStorage(videoPlayer);
 
       observer = new MutationObserver((changes) => {
         changes.forEach((change) => {
           if (change.attributeName.includes("src")) {
-            var playbackJSON = JSON.parse(
-              sessionStorage.getItem("yt-player-playback-rate")
-            );
-            if (!playbackJSON) playbackRate = 1;
-            else playbackRate = playbackJSON.data;
-
-            document.querySelector("#numInput").value = playbackRate;
-            videoPlayer.playbackRate = playbackRate;
-            rangeInput.value = playbackRate;
+            UpdatePlaybackRateFromStorage(videoPlayer);
           }
         });
       });

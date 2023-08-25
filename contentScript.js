@@ -52,7 +52,6 @@ function injectControl() {
   }
 
   function keyDownHandler(e) {
-    console.log(e);
     if (speedDownKey.includes(e.key)) {
       setNewSpeed(Number(playbackRate) - stepDown);
     } else if (speedUpKey.includes(e.key)) {
@@ -167,7 +166,6 @@ function injectControl() {
   mainDiv.appendChild(rangeInput);
 
   var menuitem = CreateMenuItem();
-  var videoPlayers;
 
   loadCommentBox = setInterval(() => {
     let commentInput;
@@ -181,12 +179,13 @@ function injectControl() {
 
   loading = setInterval(function () {
     if (videoPlayer == null) {
+      console.log("vp null");
       let movieContainer = document.querySelector("#movie_player");
       if (movieContainer == null) return;
       videoPlayer = movieContainer.getElementsByTagName("video")[0];
 
       if (videoPlayer == null) return;
-
+      console.log("vp detected");
       let keydownElement;
       if ((keydownElement = document.querySelector("#content"))) {
         keydownElement.addEventListener("keydown", keyDownHandler);
@@ -205,9 +204,9 @@ function injectControl() {
       observer.observe(videoPlayer, { attributes: true });
 
       setNewSpeed(playbackRate);
-      clearInterval(loading);
+      //clearInterval(loading);
     }
-  }, 1000);
+  }, 2000);
 }
 
 window.onload = injectControl();

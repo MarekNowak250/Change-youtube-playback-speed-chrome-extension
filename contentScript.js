@@ -116,13 +116,13 @@ function injectControl() {
     return icon;
   }
 
-  function CreateMenuItem() {
+  function CreateMenuItem(content) {
     let menuitem = document.createElement("div");
     menuitem.classList.add("ytp-menuitem");
     menuitem.setAttribute("role", "menuitem");
     menuitem.appendChild(CreateIcon());
     menuitem.appendChild(CreateLabel());
-    menuitem.appendChild(mainDiv);
+    menuitem.appendChild(content);
     return menuitem;
   }
 
@@ -165,7 +165,7 @@ function injectControl() {
   rangeInput.style.width = "10vw";
   mainDiv.appendChild(rangeInput);
 
-  var menuitem = CreateMenuItem();
+  var menuitem = CreateMenuItem(mainDiv);
 
   loadCommentBox = setInterval(() => {
     let commentInput;
@@ -191,7 +191,12 @@ function injectControl() {
         keydownElement.addEventListener("keydown", keyDownHandler);
       } else return;
 
-      movieContainer.querySelector(".ytp-panel-menu").appendChild(menuitem);
+      movieContainer
+        .querySelector(".ytp-settings-menu")
+        .querySelector(".ytp-panel")
+        .querySelector(".ytp-panel-menu")
+        .appendChild(menuitem);
+
       UpdatePlaybackRateFromStorage(videoPlayer);
 
       observer = new MutationObserver((changes) => {

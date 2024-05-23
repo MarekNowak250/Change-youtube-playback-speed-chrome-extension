@@ -5,8 +5,10 @@
 Chrome extension which allows to change youtube video playback speed from 0 to 10, by custom step. 
 The controls are integrated with youtube player in form of: 
 - draggable bar below quality option in player settings
+
 ![controls1](https://lh3.googleusercontent.com/aDtsVrwoZ-cDivKET8u9Iw-_FJBoayM03zj0OlNlTcxhEkirRzvmbTqegxr6b1vhmuNE1E6Iz747gPyl16Ow44RQPg=s800-w800-h500)
 - by keys provided by user (by default '-' or a' to subtract and '+' or 'd' to add) 
+
 ![controls2](https://lh3.googleusercontent.com/WrtgqXJyNfFFdaV_J8T_qNksrVxM_ncAJpR8WNypcyNl5NMWlJVOQWeU_m_vksH53-r-vcBUCHMdKqlpvHacmTDa=s1280-w1280-h800)
 
 Keys and step value can be easily modified in a settings window

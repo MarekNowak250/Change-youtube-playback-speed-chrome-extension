@@ -6,14 +6,14 @@ Chrome extension which allows to change youtube video playback speed from 0 to 1
 The controls are integrated with youtube player in form of: 
 - draggable bar below quality option in player settings
 
-![controls1](https://lh3.googleusercontent.com/aDtsVrwoZ-cDivKET8u9Iw-_FJBoayM03zj0OlNlTcxhEkirRzvmbTqegxr6b1vhmuNE1E6Iz747gPyl16Ow44RQPg=s800-w800-h500)
+![controls1](https://lh3.googleusercontent.com/aDtsVrwoZ-cDivKET8u9Iw-_FJBoayM03zj0OlNlTcxhEkirRzvmbTqegxr6b1vhmuNE1E6Iz747gPyl16Ow44RQPg=s800-w500-h350)
 - by keys provided by user (by default '-' or a' to subtract and '+' or 'd' to add) 
 
-![controls2](https://lh3.googleusercontent.com/WrtgqXJyNfFFdaV_J8T_qNksrVxM_ncAJpR8WNypcyNl5NMWlJVOQWeU_m_vksH53-r-vcBUCHMdKqlpvHacmTDa=s1280-w1280-h800)
+![controls2](https://lh3.googleusercontent.com/WrtgqXJyNfFFdaV_J8T_qNksrVxM_ncAJpR8WNypcyNl5NMWlJVOQWeU_m_vksH53-r-vcBUCHMdKqlpvHacmTDa=s1280-w500-h350)
 
 Keys and step value can be easily modified in a settings window
 
-![settings_page](https://lh3.googleusercontent.com/pUinTB9hkn2GuWLarWvKnTKtvyp2kq3qkcZghraNiZbKHTx5Lj-xC96Bm9IDkamZgJ4qP2IwacerVhGRBANvD_3P=s1280-w1280-h800)
+![settings_page](https://lh3.googleusercontent.com/pUinTB9hkn2GuWLarWvKnTKtvyp2kq3qkcZghraNiZbKHTx5Lj-xC96Bm9IDkamZgJ4qP2IwacerVhGRBANvD_3P=s1280-w500-h350)
 
 ## Why?
 

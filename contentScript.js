@@ -2,6 +2,7 @@ var speedDownKey = ["-", "a"];
 var speedUpKey = ["+", "d"];
 var stepUp = 0.25;
 var stepDown = 0.25;
+var currSpeed = 1;
 
 chrome.runtime.sendMessage({ method: "getSpeedUpKey" }, function (response) {
   if (response == null || response.data == null) return;
@@ -32,6 +33,7 @@ function injectControl() {
     if (newValue < 0.1) newValue = 0.1;
 
     newValue = Number(newValue).toFixed(2);
+    playbackRate = newValue;
     videoPlayer.playbackRate = newValue;
 
     let rangeinp = document.querySelector("#speed");
@@ -43,7 +45,6 @@ function injectControl() {
     if (numinp.value != newValue) {
       numinp.value = newValue;
     }
-    playbackRate = newValue;
 
     sessionStorage.setItem(
       "yt-player-playback-rate",
@@ -73,7 +74,6 @@ function injectControl() {
   }
 
   function getParentElement(elem, times) {
-    let parent;
     if (times == 0) return elem;
     if ((parent = elem.parentElement))
       return getParentElement(elem.parentElement, times - 1);

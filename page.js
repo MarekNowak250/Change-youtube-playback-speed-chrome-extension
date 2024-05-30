@@ -34,13 +34,47 @@ window.onload = () => {
   const form = document.getElementById("form");
 
   speedUpInput.addEventListener("keydown", (event) => {
-    event.target.value = event.key;
-    event.preventDefault();
+    if (speedDownInput.value.includes(event.key)) {
+      event.preventDefault();
+      return;
+    }
+
+    processKeyDownEvent(event);
   });
+
   speedDownInput.addEventListener("keydown", (event) => {
-    event.target.value = event.key;
-    event.preventDefault();
+    if (speedUpInput.value.includes(event.key)) {
+      event.preventDefault();
+      return;
+    }
+    processKeyDownEvent(event);
   });
+
+  const processKeyDownEvent = (event) => {
+    if (event.key == "Backspace") {
+      if (event.target.value.length > 1)
+        event.target.value = event.target.value.substring(
+          0,
+          event.target.value.length - 2
+        );
+      else if (event.target.value.length > 0)
+        event.target.value = event.target.value.substring(
+          0,
+          event.target.value.length - 1
+        );
+      event.preventDefault();
+    }
+    if (event.key.length != 1) {
+      event.preventDefault();
+      return;
+    }
+    currValues = event.target.value.split(",").filter(Boolean);
+    if (!currValues.includes(event.key)) {
+      currValues.push(event.key);
+      event.target.value = currValues.join(",");
+    }
+    event.preventDefault();
+  };
 
   form.addEventListener("submit", (event) => {
     chrome.storage.local.set({ speedUp: speedUpInput.value });

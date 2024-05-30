@@ -2,7 +2,7 @@
   "manifest_version": 3,
   "name": "Custom Youtube Playback Speed",
   "description": "Easy way to change youtube video playback speed",
-  "version": "1.4.4",
+  "version": "1.5.0",
   "short_name": "YTSpeed",
   "author": "Krzaku",
   "background": {

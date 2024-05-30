@@ -2,29 +2,35 @@
 
 ## Description
 
-Chrome extension which allows to change youtube video playback speed from 0 to 10, by custom step. 
-The controls are integrated with youtube player in form of: 
-- draggable bar below quality option in player settings
+Chrome extension that enables changing YouTube video playback speed from 0 to 10 with a custom step.
+
+The controls are integrated with the YouTube player in the form of: 
+- a draggable bar below the quality option in the player settings
 
 ![controls1](https://lh3.googleusercontent.com/aDtsVrwoZ-cDivKET8u9Iw-_FJBoayM03zj0OlNlTcxhEkirRzvmbTqegxr6b1vhmuNE1E6Iz747gPyl16Ow44RQPg=s800-w500-h350)
-- by keys provided by user (by default '-' or a' to subtract and '+' or 'd' to add) 
+
+- by detecting pressed keys provided by the user (by default '-' or 'a' to subtract and '+' or 'd' to add).
 
 ![controls2](https://lh3.googleusercontent.com/WrtgqXJyNfFFdaV_J8T_qNksrVxM_ncAJpR8WNypcyNl5NMWlJVOQWeU_m_vksH53-r-vcBUCHMdKqlpvHacmTDa=s1280-w500-h350)
 
-Keys and step value can be easily modified in a settings window
+Keys and step value can be easily modified in a settings window:
 
 ![settings_page](https://lh3.googleusercontent.com/pUinTB9hkn2GuWLarWvKnTKtvyp2kq3qkcZghraNiZbKHTx5Lj-xC96Bm9IDkamZgJ4qP2IwacerVhGRBANvD_3P=s1280-w500-h350)
 
+### Usage presentation (click to open youtube video)
+[![usage presentation - video](https://github.com/MarekNowak250/Change-youtube-playback-speed-chrome-extension/assets/99994906/57796353-a8bc-4a5e-99fb-804684911a9a)](https://www.youtube.com/watch?v=CWnXMyYBkUA "Usage presentation")
+
 ## Why?
 
-Youtube normally allows to set speed only from a range 0-2 with a 0.25 step.
-So this extension was made to give user more control over videos speed.
+YouTube allows users to adjust playback speed from 0.25x to 2x with a 0.25 step increment (+ some additional control with key bindings, but still up to 2x).
+This extension was designed to provide users with greater control over video playback speed and enhanced comfort through customizable key press bindings.
 
 ## Quick start
 
-Install directly  extension from [chrome extension store](https://chromewebstore.google.com/detail/custom-youtube-playback-s/mlnghacnjjppjfbbjbpkgcemiaglbpii) or download source code and unpack it. Then open Chrome browser and follow Extensions -> Manage extensions. 
-Turn on developer mode and click on load unpacked. Select folder with source code and make sure extension is active (look at a switch).
+- Install extension directly from [chrome extension store](https://chromewebstore.google.com/detail/custom-youtube-playback-s/mlnghacnjjppjfbbjbpkgcemiaglbpii)
 
-## Usage
+- Download source code and unpack it. Then, open the Chrome browser and click on the three dots in the top right corner. Then, click on Extensions and select Manage extensions. Turn on developer mode and click on "load unpacked." Choose the folder with the source code and make sure the extension is active by checking the switch.
 
 ## Contributing
+
+If you wish to make a contribution, please fork the repository and create a pull request for the `main` branch.

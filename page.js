@@ -3,6 +3,7 @@ window.onload = () => {
   const speedDownInput = document.querySelector("#speedDown");
   const stepUpInput = document.querySelector("#stepUp");
   const stepDownInput = document.querySelector("#stepDown");
+  const dynamicSpeedInput = document.querySelector("#dynamicSpeed");
 
   chrome.storage.local.get("speedDown", function (result) {
     if (result.speedDown == null) result.speedDown = "a";
@@ -22,6 +23,11 @@ window.onload = () => {
   chrome.storage.local.get("stepUp", function (result) {
     if (result.stepUp == null) result.stepUp = 0.25;
     stepUpInput.value = Number(result.stepUp);
+  });
+
+  chrome.storage.local.get("dynamicSpeed", function (result) {
+    if (result.dynamicSpeed == null) result.dynamicSpeed = false;
+    dynamicSpeedInput.checked = Boolean(result.dynamicSpeed);
   });
 
   info = localStorage.getItem("info");
@@ -81,6 +87,7 @@ window.onload = () => {
     chrome.storage.local.set({ speedDown: speedDownInput.value });
     chrome.storage.local.set({ stepUp: stepUpInput.value });
     chrome.storage.local.set({ stepDown: stepDownInput.value });
+    chrome.storage.local.set({ dynamicSpeed: dynamicSpeedInput.checked });
 
     let info =
       "Settings saved! Please refresh youtube page to apply changes (speed up: " +
@@ -91,6 +98,8 @@ window.onload = () => {
       stepUpInput.value +
       ", step down: " +
       stepDownInput.value +
+      ", show dynamic speed: " +
+      dynamicSpeedInput.checked +
       ").";
     localStorage.setItem("info", info);
   });

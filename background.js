@@ -15,6 +15,10 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
     chrome.storage.local.get("stepDown", function (result) {
       sendResponse({ data: result.stepDown });
     });
+  } else if (request.method == "getDynamicSpeed") {
+    chrome.storage.local.get("dynamicSpeed", function (result) {
+      sendResponse({ data: result.dynamicSpeed });
+    });
   } else sendResponse({});
   return true;
 });

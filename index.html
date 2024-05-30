@@ -44,7 +44,10 @@
 
       .inputContainer label {
         margin-bottom: 8px;
-        grid-area: input;
+      }
+
+      .dynamicSpeedContainer {
+        grid-area: dynamic_speed;
       }
 
       .submit-button {
@@ -67,11 +70,59 @@
         grid-template-areas:
           "input input"
           "input input"
+          "dynamic_speed dynamic_speed"
           "submit submit";
       }
 
       .submit_button-container {
         grid-area: submit;
+      }
+
+      .switch {
+        position: relative;
+        display: grid;
+        grid-template-rows: 32px;
+        grid-template-areas: "settings switch";
+      }
+
+      .switch span {
+        position: absolute;
+        cursor: pointer;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: #ccc;
+        -webkit-transition: 0.4s;
+        transition: 0.4s;
+        grid-area: switch;
+        border-radius: 34px;
+        max-width: 64px;
+      }
+
+      .switch span::before {
+        position: absolute;
+        content: "";
+        height: 26px;
+        width: 26px;
+        left: 4px;
+        bottom: 4px;
+        background-color: white;
+        -webkit-transition: 0.4s;
+        transition: 0.4s;
+        border-radius: 34px;
+      }
+
+      .switch input:checked + span {
+        background-color: #2196f3;
+      }
+
+      .switch input:checked + span::before {
+        transform: translateX(26px);
+      }
+
+      .switch input {
+        display: none;
       }
     </style>
   </head>
@@ -98,6 +149,7 @@
           required
         />
       </div>
+
       <div class="inputContainer">
         <label for="stepDown">Step down: </label>
         <input
@@ -109,6 +161,14 @@
           step="0.01"
           required
         />
+      </div>
+
+      <div class="inputContainer dynamicSpeedContainer">
+        <label class="switch" for="dynamicSpeed">
+          <input type="checkbox" name="dynamicSpeed" id="dynamicSpeed" />
+          <span></span>
+          <p>Show dynamic speed rate control:</p>
+        </label>
       </div>
       <div class="submit_button-container">
         <input type="submit" class="submit-button" value="Save" />

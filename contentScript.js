@@ -5,6 +5,7 @@ var stepDown = 0.25;
 var currSpeed = 1;
 var rangeInput = null;
 var dynamicSpeedInterval = null;
+var showDynamicSpeed = false;
 
 chrome.runtime.sendMessage({ method: "getSpeedUpKey" }, function (response) {
   if (response == null || response.data == null) return;
@@ -24,6 +25,11 @@ chrome.runtime.sendMessage({ method: "getStepUp" }, function (response) {
 chrome.runtime.sendMessage({ method: "getStepDown" }, function (response) {
   if (response == null || response.data == null) return;
   else stepDown = Number(response.data);
+});
+
+chrome.runtime.sendMessage({ method: "getDynamicSpeed" }, function (response) {
+  if (response == null || response.data == null) return;
+  else showDynamicSpeed = Boolean(response.data);
 });
 
 function injectControl() {
@@ -353,7 +359,9 @@ function injectControl() {
         .querySelector(".ytp-panel-menu");
 
       panelMenu.appendChild(menuitem);
-      panelMenu.appendChild(CreateDynamicSpeedControlPreview(panelMenu));
+      if (showDynamicSpeed) {
+        panelMenu.appendChild(CreateDynamicSpeedControlPreview(panelMenu));
+      }
 
       UpdatePlaybackRateFromStorage(videoPlayer);
 

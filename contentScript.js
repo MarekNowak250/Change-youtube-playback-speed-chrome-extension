@@ -3,6 +3,8 @@ var speedUpKey = ["+", "d"];
 var stepUp = 0.25;
 var stepDown = 0.25;
 var currSpeed = 1;
+var rangeInput = null;
+var dynamicSpeedInterval = null;
 
 chrome.runtime.sendMessage({ method: "getSpeedUpKey" }, function (response) {
   if (response == null || response.data == null) return;
@@ -73,14 +75,56 @@ function injectControl() {
     }, 1500);
   }
 
-  function getParentElement(elem, times) {
-    if (times == 0) return elem;
-    if ((parent = elem.parentElement))
-      return getParentElement(elem.parentElement, times - 1);
-    else return false;
-  }
+  const activateDynamicSpeed = (
+    startSpeed,
+    desiredSpeed,
+    reachWhenInPercentage
+  ) => {
+    startSpeed = Number(startSpeed);
+    desiredSpeed = Number(desiredSpeed);
+    reachWhenInPercentage = Number(reachWhenInPercentage);
 
-  function CreateLabel() {
+    if (desiredSpeed < startSpeed) return;
+
+    clearInterval(dynamicSpeedInterval);
+    dynamicSpeedInterval = setInterval(() => {
+      if (videoPlayer == null) return;
+      let newPlaybackRate =
+        startSpeed +
+        ((desiredSpeed - startSpeed) *
+          (videoPlayer.currentTime / videoPlayer.duration)) /
+          (reachWhenInPercentage / 100);
+
+      setNewSpeed(Number(newPlaybackRate));
+
+      if (newPlaybackRate >= desiredSpeed) {
+        setNewSpeed(desiredSpeed);
+        clearInterval(dynamicSpeedInterval);
+      }
+    }, 1000);
+  };
+
+  const CreateSpeedControl = () => {
+    let mainDiv = document.createElement("div");
+    mainDiv.classList.add("ytp-menuitem-content");
+
+    rangeInput = document.createElement("input");
+    rangeInput.setAttribute("type", "range");
+    rangeInput.setAttribute("id", "speed");
+    rangeInput.setAttribute("name", "speed");
+    rangeInput.setAttribute("step", "0.1");
+    rangeInput.setAttribute("min", "0.1");
+    rangeInput.setAttribute("max", "5");
+    rangeInput.setAttribute("list", "tickmarks");
+    rangeInput.addEventListener("change", setNewSpeed);
+    rangeInput.style.minWidth = "150px";
+    rangeInput.style.width = "10vw";
+    mainDiv.appendChild(rangeInput);
+
+    return CreateMenuItem(mainDiv, CreateIcon(), CreateNumericInputLabel());
+  };
+
+  function CreateNumericInputLabel() {
     let itemLabel = document.createElement("div");
     itemLabel.classList.add("ytp-menuitem-label");
 
@@ -94,11 +138,7 @@ function injectControl() {
     numericInput.setAttribute("max", "10");
     numericInput.setAttribute("step", "0.10");
     numericInput.style.marginLeft = "0.5rem";
-    numericInput.style.width = "4rem";
-    numericInput.style.backgroundColor = "transparent";
-    numericInput.style.color = "white";
-    numericInput.style.border = "none";
-    numericInput.style.boxShadow = "none";
+    styleNumericInput(numericInput, "4rem");
     numericInput.addEventListener("change", setNewSpeed);
     numericInput.onkeydown = function (e) {
       e.stopPropagation();
@@ -110,18 +150,151 @@ function injectControl() {
     return itemLabel;
   }
 
+  const styleNumericInput = (input, width) => {
+    input.style.width = width;
+    input.style.backgroundColor = "transparent";
+    input.style.color = "white";
+    input.style.border = "none";
+    input.style.boxShadow = "none";
+  };
+
+  const CreateDynamicSpeedControl = () => {
+    let mainDiv = document.createElement("div");
+    mainDiv.classList.add("ytp-menuitem-content");
+
+    let startSpeedInput = document.createElement("input");
+    startSpeedInput.setAttribute("type", "number");
+    startSpeedInput.setAttribute("id", "ds_StartSpeed");
+    startSpeedInput.setAttribute("name", "ds_StartSpeed");
+    startSpeedInput.setAttribute("step", "0.1");
+    startSpeedInput.setAttribute("min", "0.1");
+    startSpeedInput.setAttribute("max", "10");
+    styleNumericInput(startSpeedInput, "4rem");
+    startSpeedInput.value = playbackRate;
+    startSpeedInput.onkeydown = function (e) {
+      e.stopPropagation();
+    };
+
+    let labelTo = document.createElement("span");
+    labelTo.innerHTML = "to ";
+
+    let desiredSpeedInput = document.createElement("input");
+    desiredSpeedInput.setAttribute("type", "number");
+    desiredSpeedInput.setAttribute("id", "ds_DesiredSpeed");
+    desiredSpeedInput.setAttribute("name", "ds_DesiredSpeed");
+    desiredSpeedInput.setAttribute("step", "0.1");
+    desiredSpeedInput.setAttribute("min", "0.1");
+    desiredSpeedInput.setAttribute("max", "10");
+    styleNumericInput(desiredSpeedInput, "4rem");
+    desiredSpeedInput.value = playbackRate;
+    desiredSpeedInput.onkeydown = function (e) {
+      e.stopPropagation();
+    };
+
+    let endAtLabel = document.createElement("span");
+    endAtLabel.innerHTML = "end at: ";
+
+    let desiredDurationInPercentage = document.createElement("input");
+    desiredDurationInPercentage.setAttribute("type", "number");
+    desiredDurationInPercentage.setAttribute("id", "ds_DesiredSpeed");
+    desiredDurationInPercentage.setAttribute("name", "ds_DesiredSpeed");
+    desiredDurationInPercentage.setAttribute("step", "2");
+    desiredDurationInPercentage.setAttribute("min", "10");
+    desiredDurationInPercentage.setAttribute("max", "100");
+    styleNumericInput(desiredDurationInPercentage, "4rem");
+    desiredDurationInPercentage.value = 50;
+    desiredDurationInPercentage.onkeydown = function (e) {
+      e.stopPropagation();
+    };
+
+    let percentageLabel = document.createElement("span");
+    percentageLabel.innerHTML = "% ";
+
+    let startButton = document.createElement("button");
+    startButton.setAttribute("type", "button");
+    startButton.innerHTML = "Start";
+    startButton.onclick = () => {
+      activateDynamicSpeed(
+        startSpeedInput.value,
+        desiredSpeedInput.value,
+        desiredDurationInPercentage.value
+      );
+    };
+
+    mainDiv.appendChild(startSpeedInput);
+    mainDiv.appendChild(labelTo);
+    mainDiv.appendChild(desiredSpeedInput);
+    mainDiv.appendChild(endAtLabel);
+    mainDiv.appendChild(desiredDurationInPercentage);
+    mainDiv.appendChild(percentageLabel);
+    mainDiv.appendChild(startButton);
+
+    return CreateMenuItem(mainDiv, CreateIcon(), CreateDynamicSpeedLabel());
+  };
+
+  function CreateDynamicSpeedControlPreview(panelMenu) {
+    let arrowDown = "˅";
+    let arrowUp = "⌃";
+    let icon = document.createElement("div");
+    icon.innerHTML = arrowDown;
+    icon.classList.add("ytp-menu-icon");
+    icon.style.position = "relative";
+    icon.style.float = "left";
+    icon.style.top = "50%";
+    icon.style.left = "50%";
+    icon.style.transform = "translate(-50%, -50%)";
+
+    let itemLabel = document.createElement("div");
+    itemLabel.classList.add("ytp-menuitem-label");
+    itemLabel.innerHTML = "Dynamic speed control";
+
+    mainDiv = CreateMenuItem(document.createElement("div"), icon, itemLabel);
+    mainDiv.onclick = () => {
+      if (icon.innerHTML === arrowDown) {
+        dSpeedControl = CreateDynamicSpeedControl();
+        panelMenu.appendChild(dSpeedControl);
+        icon.innerHTML = arrowUp;
+        itemLabel.innerHTML = "Hide and stop";
+      } else {
+        icon.innerHTML = arrowDown;
+        panelMenu.removeChild(panelMenu.lastChild);
+        itemLabel.innerHTML = "Dynamic speed control";
+        clearInterval(dynamicSpeedInterval);
+      }
+    };
+
+    return mainDiv;
+  }
+
+  function CreateDynamicSpeedLabel() {
+    let itemLabel = document.createElement("div");
+    itemLabel.classList.add("ytp-menuitem-label");
+
+    let label = document.createElement("label");
+    label.innerHTML = "Dynamic speed:";
+    itemLabel.appendChild(label);
+    return itemLabel;
+  }
+
   function CreateIcon() {
     let icon = document.createElement("div");
     icon.classList.add("ytp-menu-icon");
     return icon;
   }
 
-  function CreateMenuItem(content) {
+  function getParentElement(elem, times) {
+    if (times == 0) return elem;
+    if ((parent = elem.parentElement))
+      return getParentElement(elem.parentElement, times - 1);
+    else return false;
+  }
+
+  function CreateMenuItem(content, icon, label) {
     let menuitem = document.createElement("div");
     menuitem.classList.add("ytp-menuitem");
     menuitem.setAttribute("role", "menuitem");
-    menuitem.appendChild(CreateIcon());
-    menuitem.appendChild(CreateLabel());
+    menuitem.appendChild(icon);
+    menuitem.appendChild(label);
     menuitem.appendChild(content);
     return menuitem;
   }
@@ -141,8 +314,6 @@ function injectControl() {
   // program starts here
   var sessionStorage = window.sessionStorage;
   var videoPlayer;
-  var mainDiv = document.createElement("div");
-  mainDiv.classList.add("ytp-menuitem-content");
 
   var playbackRate = 1;
   var playbackJSON = JSON.parse(
@@ -152,20 +323,7 @@ function injectControl() {
   if (!playbackJSON) playbackRate = 1;
   else playbackRate = playbackJSON.data;
 
-  var rangeInput = document.createElement("input");
-  rangeInput.setAttribute("type", "range");
-  rangeInput.setAttribute("id", "speed");
-  rangeInput.setAttribute("name", "speed");
-  rangeInput.setAttribute("step", "0.1");
-  rangeInput.setAttribute("min", "0.1");
-  rangeInput.setAttribute("max", "5");
-  rangeInput.setAttribute("list", "tickmarks");
-  rangeInput.addEventListener("change", setNewSpeed);
-  rangeInput.style.minWidth = "150px";
-  rangeInput.style.width = "10vw";
-  mainDiv.appendChild(rangeInput);
-
-  var menuitem = CreateMenuItem(mainDiv);
+  var menuitem = CreateSpeedControl(playbackRate);
 
   loadCommentBox = setInterval(() => {
     let commentInput;
@@ -179,29 +337,30 @@ function injectControl() {
 
   loading = setInterval(function () {
     if (videoPlayer == null) {
-      console.log("vp null");
       let movieContainer = document.querySelector("#movie_player");
       if (movieContainer == null) return;
       videoPlayer = movieContainer.getElementsByTagName("video")[0];
 
       if (videoPlayer == null) return;
-      console.log("vp detected");
       let keydownElement;
       if ((keydownElement = document.querySelector("#content"))) {
         keydownElement.addEventListener("keydown", keyDownHandler);
       } else return;
 
-      movieContainer
+      panelMenu = movieContainer
         .querySelector(".ytp-settings-menu")
         .querySelector(".ytp-panel")
-        .querySelector(".ytp-panel-menu")
-        .appendChild(menuitem);
+        .querySelector(".ytp-panel-menu");
+
+      panelMenu.appendChild(menuitem);
+      panelMenu.appendChild(CreateDynamicSpeedControlPreview(panelMenu));
 
       UpdatePlaybackRateFromStorage(videoPlayer);
 
       observer = new MutationObserver((changes) => {
         changes.forEach((change) => {
           if (change.attributeName.includes("src")) {
+            clearInterval(dynamicSpeedInterval);
             UpdatePlaybackRateFromStorage(videoPlayer);
           }
         });

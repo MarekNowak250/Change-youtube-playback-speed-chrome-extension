@@ -18,8 +18,17 @@ Keys and step value can be easily modified in a settings window:
 ![settings_page](https://lh3.googleusercontent.com/pUinTB9hkn2GuWLarWvKnTKtvyp2kq3qkcZghraNiZbKHTx5Lj-xC96Bm9IDkamZgJ4qP2IwacerVhGRBANvD_3P=s1280-w500-h350)
 
 ### Usage presentation (click to open youtube video)
-[![usage presentation - video](https://github.com/MarekNowak250/Change-youtube-playback-speed-chrome-extension/assets/99994906/57796353-a8bc-4a5e-99fb-804684911a9a)](https://www.youtube.com/watch?v=CWnXMyYBkUA "Usage presentation")
+[![usage presentation - video](https://github.com/MarekNowak250/Change-youtube-playback-speed-chrome-extension/assets/99994906/57796353-a8bc-4a5e-99fb-804684911a9a){width=500 height=350}](https://www.youtube.com/watch?v=CWnXMyYBkUA "Usage presentation")
 
+### New dynamic playback speed control in version 1.6.0!
+
+The feature of dynamic video playback speed enables the playback speed to begin at a specified rate and then gradually increase until it reaches the desired rate at the specified duration percentage.
+
+E.g. the video starts at 1x speed and gradually increases based on the video duration until it reaches 50%, at which point it will reach 3x speed.
+
+![dynamic speed control closed](https://gitlab.com/Phoenix510/change-youtube-playback-speed-chrome-extension/-/wikis/uploads/c14a333e77832869c0975ddef98b278f/1.png){width=320}
+
+![dynamic speed control open](https://gitlab.com/Phoenix510/change-youtube-playback-speed-chrome-extension/-/wikis/uploads/58a2dddf436f5e5cf3058bfd922cd45b/image.png){width=320}
 ## Why?
 
 YouTube allows users to adjust playback speed from 0.25x to 2x with a 0.25 step increment (+ some additional control with key bindings, but still up to 2x).

@@ -18,7 +18,7 @@ Keys and step value can be easily modified in a settings window:
 ![settings_page](https://lh3.googleusercontent.com/pUinTB9hkn2GuWLarWvKnTKtvyp2kq3qkcZghraNiZbKHTx5Lj-xC96Bm9IDkamZgJ4qP2IwacerVhGRBANvD_3P=s1280-w500-h350)
 
 ### Usage presentation (click to open youtube video)
-[![usage presentation - video](https://github.com/MarekNowak250/Change-youtube-playback-speed-chrome-extension/assets/99994906/57796353-a8bc-4a5e-99fb-804684911a9a)](https://www.youtube.com/watch?v=CWnXMyYBkUA "Usage presentation")
+[![usage presentation - video](https://gitlab.com/Phoenix510/change-youtube-playback-speed-chrome-extension/-/wikis/uploads/b0e9f54750c06272d2f0c2d624a90a4f/thumbnail.png)](https://www.youtube.com/watch?v=CWnXMyYBkUA "Usage presentation")
 
 ### New dynamic playback speed control in version 1.6.0!
 

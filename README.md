@@ -18,7 +18,7 @@ Keys and step value can be easily modified in a settings window:
 ![settings_page](https://lh3.googleusercontent.com/pUinTB9hkn2GuWLarWvKnTKtvyp2kq3qkcZghraNiZbKHTx5Lj-xC96Bm9IDkamZgJ4qP2IwacerVhGRBANvD_3P=s1280-w500-h350)
 
 ### Usage presentation (click to open youtube video)
-[![usage presentation - video](https://github.com/MarekNowak250/Change-youtube-playback-speed-chrome-extension/assets/99994906/57796353-a8bc-4a5e-99fb-804684911a9a){width=500 height=350}](https://www.youtube.com/watch?v=CWnXMyYBkUA "Usage presentation")
+[![usage presentation - video](https://github.com/MarekNowak250/Change-youtube-playback-speed-chrome-extension/assets/99994906/57796353-a8bc-4a5e-99fb-804684911a9a)](https://www.youtube.com/watch?v=CWnXMyYBkUA "Usage presentation")
 
 ### New dynamic playback speed control in version 1.6.0!
 
@@ -26,13 +26,13 @@ The feature of dynamic video playback speed enables the playback speed to begin 
 
 E.g. the video starts at 1x speed and gradually increases based on the video duration until it reaches 50%, at which point it will reach 3x speed.
 
-![dynamic speed control closed](https://gitlab.com/Phoenix510/change-youtube-playback-speed-chrome-extension/-/wikis/uploads/c14a333e77832869c0975ddef98b278f/1.png){width=320}
+![dynamic speed control closed](https://gitlab.com/Phoenix510/change-youtube-playback-speed-chrome-extension/-/wikis/uploads/a22dd796e8b5621b68c1afda0105df28/dynamic_control_closed.png)
 
-![dynamic speed control open](https://gitlab.com/Phoenix510/change-youtube-playback-speed-chrome-extension/-/wikis/uploads/58a2dddf436f5e5cf3058bfd922cd45b/image.png){width=320}
+![dynamic speed control open](https://gitlab.com/Phoenix510/change-youtube-playback-speed-chrome-extension/-/wikis/uploads/a1f9e4535d2e6177dbe645d5345af85f/dynamic_control.png)
 
 **Remember to enable it in a settings!**
 
-![dynamic speed control open](https://gitlab.com/Phoenix510/change-youtube-playback-speed-chrome-extension/-/wikis/uploads/accf4059e57fa2c0e819883febbde2cb/image.png){width:320}
+![dynamic speed control open](https://gitlab.com/Phoenix510/change-youtube-playback-speed-chrome-extension/-/wikis/uploads/e1ddfd779efe7b16a94a30bd6da85342/settings.png)
 
 ## Why?
 

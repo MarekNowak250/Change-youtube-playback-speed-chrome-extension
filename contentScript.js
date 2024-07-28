@@ -33,6 +33,22 @@ chrome.runtime.sendMessage({ method: "getDynamicSpeed" }, function (response) {
 });
 
 function injectControl() {
+  const displaySpeed = (speedValue) => {
+    let rangeinp = document.querySelector("#speed");
+    let numinp = document.querySelector("#numInput");
+
+    if (rangeinp.value != speedValue) {
+      rangeinp.value = speedValue;
+    }
+    if (numinp.value != speedValue) {
+      numinp.value = speedValue;
+    }
+  };
+
+  function rangeInputInputHandle() {
+    displaySpeed(Number(this.value).toFixed(2));
+  }
+
   function setNewSpeed(val) {
     let newValue = this.value;
 
@@ -44,15 +60,7 @@ function injectControl() {
     playbackRate = newValue;
     videoPlayer.playbackRate = newValue;
 
-    let rangeinp = document.querySelector("#speed");
-    let numinp = document.querySelector("#numInput");
-
-    if (rangeinp.value != newValue) {
-      rangeinp.value = newValue;
-    }
-    if (numinp.value != newValue) {
-      numinp.value = newValue;
-    }
+    displaySpeed(newValue);
 
     sessionStorage.setItem(
       "yt-player-playback-rate",
@@ -121,8 +129,8 @@ function injectControl() {
     rangeInput.setAttribute("step", "0.1");
     rangeInput.setAttribute("min", "0.1");
     rangeInput.setAttribute("max", "5");
-    rangeInput.setAttribute("list", "tickmarks");
     rangeInput.addEventListener("change", setNewSpeed);
+    rangeInput.addEventListener("input", rangeInputInputHandle);
     rangeInput.style.minWidth = "150px";
     rangeInput.style.width = "10vw";
     mainDiv.appendChild(rangeInput);
